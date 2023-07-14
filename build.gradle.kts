@@ -1,9 +1,14 @@
 plugins {
     id("java")
+    id("io.ktor.plugin") version "2.3.2"
 }
 
 group = "kr.wiselight"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass.set("kr.wiselight.i18n.Main")
+}
 
 repositories {
     mavenCentral()
