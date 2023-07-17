@@ -37,8 +37,9 @@ public class Main {
         Properties prop = new Properties();
         FileInputStream input = null;
 
-        String srcPropertieFilePath = args[0];
-        String destClassPath = args[1];
+        String packageStr = args[0];
+        String srcPropertieFilePath = args[1];
+        String destClassPath = args[2];
 
         try {
             input = new FileInputStream(srcPropertieFilePath);
@@ -58,6 +59,9 @@ public class Main {
             }
 
             FileWriter writer = new FileWriter(destClassPath + "/I18N.java");
+            writer.write("package ");
+            writer.write(packageStr);
+            writer.write(";\n\n");
             writer.write("public final class I18N {\n");
 
             generateClass(writer, root, "", "    ");
