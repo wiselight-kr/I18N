@@ -16,16 +16,18 @@ public class Main {
         }
     }
 
-    public static void generateClass(FileWriter writer, Node node, String indentation) throws IOException {
+    public static void generateClass(FileWriter writer, Node node, String parentKey, String indentation) throws IOException {
         for (Map.Entry<String, Node> entry : node.children.entrySet()) {
             String key = entry.getKey();
             Node child = entry.getValue();
 
+            String newKey = (parentKey.isEmpty() ? "" : (parentKey + ".")) + key;
+
             if (child.children.isEmpty()) {
-                writer.write(indentation + "public static final String " + key + " = \"" + key + "\";\n");
+                writer.write(indentation + "public static final String " + key + " = \"" + newKey + "\";\n");
             } else {
                 writer.write(indentation + "public static final class " + key + " {\n");
-                generateClass(writer, child, indentation + "    ");
+                generateClass(writer, child, newKey, indentation + "    ");
                 writer.write(indentation + "}\n");
             }
         }
@@ -58,7 +60,7 @@ public class Main {
             FileWriter writer = new FileWriter(destClassPath + "/I18N.java");
             writer.write("public final class I18N {\n");
 
-            generateClass(writer, root, "    ");
+            generateClass(writer, root, "", "    ");
 
             writer.write("}\n");
             writer.close();
